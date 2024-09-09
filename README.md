@@ -1,4 +1,4 @@
-# Web hosting with AWS ASG, ALB, and Route 53
+# Web hosting with AWS ASG, ALB, and Route 53 using Terraform
 
 ## Overview
 
