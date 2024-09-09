@@ -9,8 +9,11 @@ This repository provides Terraform configuration files to deploy and manage a sc
 - **EC2 Instances:** Managed by an Auto Scaling Group to ensure high availability and scalability based on traffic demands.
 - **Application Load Balancer (ALB):** Distributes HTTP/HTTPS requests to multiple EC2 instances to balance the load and enhance reliability.
 - **Route 53:** Configures DNS to route traffic to the ALB, allowing users to access the web page via a custom domain.
+
   
-![TerraformProject-ASG_ALB-Infra](https://github.com/user-attachments/assets/52bbd94c-3acf-4f2f-9c6f-26bf9e9766a4)
+![TerraformProject-ASG_ALB-Infra](https://github.com/user-attachments/assets/ae7454be-11f0-4243-9aa3-d947dd4593d2)
+
+
 
 ## Features
 
