@@ -3,7 +3,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
-# create a data block for a template file for the outputs
+# create a data block for a template file for the outputs if you want to use ansible for further configuration management
+# or else you can skip this part
+# It will update the inventory for the ansible scripts with the template and values mentioned
+# You can also customize the template
+
 data "template_file" "inventory" {
     template = <<-EOF
         [private_instance]
@@ -236,7 +240,7 @@ resource "aws_lb_target_group" "alb" {
 
   health_check {
     interval = 30
-    path = "/" # once the kubernetes is setup, it should be modified 
+    path = "/" # if you use kubernetes for further enhancements, then it should be modified 
     port = 80
     protocol = "HTTP"
     timeout = 5
@@ -286,17 +290,17 @@ resource "aws_instance" "private" {
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
       "sudo usermod -aG docker ubuntu",
-      "sudo docker pull akashhc55/web-build:v1",
+      "sudo docker pull akashhc55/web-build:v1", #You can create your own image or you can use this image as well
       "sudo docker run -d -p 80:80 akashhc55/web-build:v1"
     ]
     connection {
       type = "ssh"
       user = "ubuntu"
-      private_key = file("/home/akash/New_key2.pem")
+      private_key = file("/path/to/keyfile/in/local") #specify the private key file path 
       host = self.private_ip
       bastion_host = aws_instance.bastion.public_ip
       bastion_user = "ubuntu"
-      bastion_private_key = file("/home/akash/New_key2.pem")
+      bastion_private_key = file("/path/to/keyfile/in/local")
     }
   }
   tags = {
@@ -314,7 +318,7 @@ resource "aws_lb_target_group_attachment" "alb" {
 # create an alias record in route53 hosted zone for alb
 resource "aws_route53_record" "alb-record" {
   zone_id = data.aws_route53_zone.devopsify-zone.zone_id
-  name = "app.devopsify.xyz"
+  name = "test.example.com" # your domain name
   type = "A"
 
   alias {
@@ -347,10 +351,13 @@ output "instance_ip" {
 
 output "url" {
   description = "Route53 url"
-  value = "http://app.devopsify.xyz"
+  value = "http://test.example.com" # your url for the domain
 }
 
 # create a local file for the inventory and update
+# As mentioned earlier, if you do not want to use ansible then you can skip this as well
+# It will create/update the inventory file in local with the template and values from the data block mentioned in the script
+
 resource "local_file" "ansible_inventory" {
   content = data.template_file.inventory.rendered
   filename = "inventory"
