@@ -1,4 +1,4 @@
-**Web Page Hosting with Docker, EC2, and Terraform**
+****Web Page Hosting with Docker, EC2, and Terraform****
 
 This project automates the deployment of a web application hosted inside a Docker container on an EC2 instance in AWS. The infrastructure is set up using a single, non-modular Terraform script. The deployment also integrates an Application Load Balancer (ALB) for load distribution and uses Route 53 to make the application publicly accessible via a custom domain.
 
